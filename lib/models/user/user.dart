@@ -40,3 +40,16 @@ class User {
   /// Email
   final String? email;
 }
+
+enum UserInfoTable {
+  id('id'),
+  firstName('firstname'),
+  middlename('middlename'),
+  lastname('lastname'),
+  mobile('mobile'),
+  email('email'),
+  tableName('user_info');
+
+  const UserInfoTable(this.string);
+  final String string;
+}
