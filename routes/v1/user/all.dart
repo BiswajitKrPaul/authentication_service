@@ -1,7 +1,15 @@
+import 'dart:convert';
+
 import 'package:authentication_servicee/repository/user_repo.dart';
 import 'package:dart_frog/dart_frog.dart';
 
 Future<Response> onRequest(RequestContext context) async {
-  final result = await context.read<UserRepository>().getAllUser();
-  return Response.json(body: result);
+  final body = await context.request.body();
+  final jsonBody = body.isNotEmpty
+      ? jsonDecode(body) as Map<String, dynamic>
+      : <String, dynamic>{};
+  return context.read<UserRepository>().getAllUser(
+        page: jsonBody['page'] as int?,
+        limit: jsonBody['limit'] as int?,
+      );
 }

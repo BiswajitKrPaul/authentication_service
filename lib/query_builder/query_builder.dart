@@ -1,15 +1,27 @@
-enum QueryMode { insert, update, delete, select }
+enum QueryMode { insert, update, delete, select, paginatedSelect }
 
 class QueryBuilder {
   QueryBuilder.insert({
     required this.columnNames,
     required this.columnValues,
     required this.tableName,
-  }) : mode = QueryMode.insert;
+  })  : mode = QueryMode.insert,
+        pageNo = 0,
+        limit = 0;
+
+  QueryBuilder.paginatedSelect({
+    required this.columnNames,
+    required this.tableName,
+    this.pageNo = 1,
+    this.limit = 10,
+  })  : mode = QueryMode.paginatedSelect,
+        columnValues = [];
 
   final List<String> columnNames;
   final List<dynamic> columnValues;
   final String tableName;
+  final int pageNo;
+  final int limit;
 
   final QueryMode mode;
 
@@ -25,6 +37,13 @@ class QueryBuilder {
         return '';
       case QueryMode.select:
         return '';
+      case QueryMode.paginatedSelect:
+        return _buildPaginatedSelectQuery(
+          columnNames,
+          tableName,
+          pageNo,
+          limit,
+        );
     }
   }
 
@@ -41,6 +60,22 @@ class QueryBuilder {
         }
         return e;
       }).join(',')})";
+    }
+    return null;
+  }
+
+  String? _buildPaginatedSelectQuery(
+    List<String> columnNames,
+    String tableName,
+    int page,
+    int limit,
+  ) {
+    if (columnNames.isNotEmpty && tableName.isNotEmpty) {
+      final offset = pageNo <= 1 ? 0 : (pageNo - 1) * limit;
+
+      return 'select (select count(*) from $tableName) as count, '
+          "${columnNames.join(',')} from $tableName"
+          ' limit $limit offset $offset ';
     }
     return null;
   }

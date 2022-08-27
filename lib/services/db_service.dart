@@ -6,9 +6,9 @@ final databaseProvider = Provider<PostgreSQLConnection>((ref) {
   final postgreSQLConnection = PostgreSQLConnection(
     'localhost',
     5432,
-    'authentication',
+    'authentication_service',
     username: 'postgres',
-    password: 'example',
+    password: 'postgres',
   );
   return postgreSQLConnection;
 });
