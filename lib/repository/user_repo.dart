@@ -52,6 +52,11 @@ class UserRepository {
         statusCode: HttpStatus.badRequest,
         body: {'error': e.message},
       );
+    } on Exception {
+      return Response.json(
+        statusCode: HttpStatus.badRequest,
+        body: {'error': 'Server Not Responding'},
+      );
     }
 
     return Response(statusCode: HttpStatus.requestTimeout);
