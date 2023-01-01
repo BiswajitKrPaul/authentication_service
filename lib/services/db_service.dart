@@ -1,3 +1,5 @@
+import 'package:authentication_servicee/prisma_client.dart';
+import 'package:dotenv/dotenv.dart';
 import 'package:postgres/postgres.dart';
 import 'package:riverpod/riverpod.dart';
 
@@ -13,5 +15,11 @@ final databaseProvider = Provider<PostgreSQLConnection>((ref) {
   return postgreSQLConnection;
 });
 
+final prismaClientProvider = Provider<PrismaClient>((ref) {
+  return PrismaClient();
+});
+
 /// Sdasdasd
 final ProviderContainer ref = ProviderContainer();
+
+final env = DotEnv()..load();

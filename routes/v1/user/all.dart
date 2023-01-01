@@ -9,7 +9,7 @@ Future<Response> onRequest(RequestContext context) async {
       ? jsonDecode(body) as Map<String, dynamic>
       : <String, dynamic>{};
   return context.read<UserRepository>().getAllUser(
-        page: jsonBody['page'] as int?,
-        limit: jsonBody['limit'] as int?,
+        page: (jsonBody['page'] as int?) ?? 1,
+        limit: (jsonBody['limit'] as int?) ?? 50,
       );
 }

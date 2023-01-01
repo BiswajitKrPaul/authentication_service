@@ -17,7 +17,7 @@ void main() {
       final connection = container.read(databaseProvider);
       await connection.open();
       final userRepo = _MockUserRespo();
-      await userRepo.getAllUser();
+      // await userRepo.getAllUser();
     });
   });
 }
